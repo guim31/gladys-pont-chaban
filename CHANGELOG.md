@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-29
+
 ### Added
 
 - A "Pont Chaban-Delmas" device for the dashboard and scene conditions: closed to traffic now, closure
@@ -23,3 +25,6 @@ the notes of the version's GitHub Release.
   and the next 3, 5 or 8 closures.
 - "Check" action, texts in English, French, German and Spanish, times read in Europe/Paris (clock
   changes included) and shown in the time zone of Gladys.
+
+[Unreleased]: https://github.com/guim31/gladys-pont-chaban/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/guim31/gladys-pont-chaban/releases/tag/v1.0.0
