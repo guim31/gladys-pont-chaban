@@ -30,6 +30,15 @@ Gladys before reporting a problem.
 
 In scope: the code of this repository and the Docker image it publishes.
 
+What the integration stores and exchanges:
+
+- `/data/cache.json`: the last answer of the Bordeaux Métropole open data (the bridge closures: public
+  data), and `/data/triggers.json`: the last instant the scene triggers were checked and the events
+  already fired. Nothing personal, no secret: the integration asks for no account, no password and no
+  API key. The language is kept in the Gladys configuration.
+- Network: HTTPS requests to `opendata.bordeaux-metropole.fr` only, without any identifier, two an hour
+  (six an hour at most after failures).
+
 Out of scope: Gladys Assistant itself (see its
-[security policy](https://github.com/GladysAssistant/Gladys/security/policy)),
-and the third-party services and devices the integration talks to.
+[security policy](https://github.com/GladysAssistant/Gladys/security/policy))
+and the open data portal of Bordeaux Métropole.

@@ -1,77 +1,85 @@
+// -----------------------------------------------------------------------------
+// The widget "Bridge closures": valid for the core, open or closed, its
+// settings, the name of the device in Gladys.
+// -----------------------------------------------------------------------------
+
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateWidgetContent } from '@gladysassistant/integration-sdk';
-import { createFakeGladys } from '@gladysassistant/integration-sdk/testing';
-import { buildDiscoveredDevices } from '../src/devices/index.js';
-import { simulateLanSession } from '../src/devices/plug.js';
-import { DEMO_STATUS_WIDGET, WIDGETS, refreshWidgets } from '../src/widgets.js';
-import { normalizeConfig } from '../src/config.js';
+import { WIDGET_KEY } from '../src/service.js';
+import { countdown } from '../src/widgets.js';
+import { WIDGET_TEXT } from '../src/i18n.js';
+import { createWorld, fakePortal } from './helpers/world.js';
 
-const gladys = createFakeGladys();
-const config = normalizeConfig();
-const demoStatus = WIDGETS[DEMO_STATUS_WIDGET];
+async function get(world, settings = {}, language = 'fr') {
+  const ack = await world.gladys.fake.widgetGet(WIDGET_KEY, { settings, language });
+  assert.equal(ack.success, true, ack.error);
+  validateWidgetContent(ack.data.content);
+  return ack.data.content.components;
+}
 
-// What the SDK passes to onWidgetGet, plus the config index.js adds.
-const getContent = (cfg = config) =>
-  demoStatus.get(gladys, { settings: {}, language: 'en', units: 'metric', config: cfg });
-
-test('the demo_status content is rendered exactly as sent', async () => {
-  // [] = nothing the core would drop, truncate or trim to the content budget.
-  assert.deepEqual(validateWidgetContent(await getContent()), []);
-});
-
-test('the degraded plug connection content is valid too', async () => {
-  simulateLanSession(false);
-  try {
-    const content = await getContent();
-    assert.deepEqual(validateWidgetContent(content), []);
-    const status = content.components.find((component) => component.type === 'status');
-    assert.ok(
-      status.items.some((item) => item.color === 'warning'),
-      'degraded shows a warning',
-    );
-  } finally {
-    simulateLanSession(true);
-  }
-});
-
-test('the live tiles reference features the integration publishes', async () => {
-  const featureIds = new Set(
-    buildDiscoveredDevices(gladys, config).flatMap((device) =>
-      device.features.map((feature) => feature.external_id),
-    ),
+test('open: the countdown and the next closures', async (t) => {
+  const world = await createWorld();
+  t.after(() => world.app.stop());
+  const components = await get(world);
+  assert.equal(components[0].text, 'Pont Chaban-Delmas');
+  assert.deepEqual(
+    components.slice(1, 3).map(({ label, value }) => [label, value]),
+    [
+      ['Circulation', 'Ouvert'],
+      ['Prochaine fermeture dans', '16 h 04'],
+    ],
   );
-  const liveTiles = (await getContent()).components.filter((c) => c.device_feature);
-  assert.ok(liveTiles.length > 0, 'the template demonstrates a device-bound tile');
-  for (const tile of liveTiles) {
-    assert.ok(featureIds.has(tile.device_feature), `unknown feature ${tile.device_feature}`);
-  }
+  const list = components.at(-1);
+  assert.equal(list.items.length, 5);
+  assert.deepEqual(list.items[0], {
+    title: 'mer. 13 mai · 04:04 – 05:27',
+    subtitle: 'passage de AMBITION',
+    badge: { text: 'Totale', color: 'danger' },
+  });
+  assert.ok(components.length <= 8);
 });
 
-test('every button action of the content is handled and answers a short toast', async () => {
-  const buttons = (await getContent()).components.filter((c) => c.type === 'button' && c.action);
-  assert.ok(buttons.length > 0, 'the template demonstrates a widget action');
-  for (const { action } of buttons) {
-    const message = await demoStatus.action(gladys, {
-      actionKey: action.key,
-      params: action.params ?? {},
-      settings: {},
-      config,
-    });
-    assert.ok(message.en, 'the toast carries at least the mandatory `en` text');
-    assert.ok(message.en.length <= 200, 'toasts are capped at 200 characters');
-  }
-});
-
-test('an unknown widget action fails, so the user sees the error', async () => {
-  await assert.rejects(
-    demoStatus.action(gladys, { actionKey: 'unknown', params: {}, settings: {}, config }),
-    /Unknown widget action/,
+test('closed: the reopening time; settings hide the status and choose the rows', async (t) => {
+  const world = await createWorld({ at: '2026-05-13T02:30:00Z' });
+  t.after(() => world.app.stop());
+  const components = await get(world, {}, 'en');
+  assert.deepEqual(
+    components.slice(1, 3).map(({ label, value }) => [label, value]),
+    [
+      ['Traffic', 'Closed'],
+      ['Reopens at', '05:27'],
+    ],
   );
+  const short = await get(world, { rows: '3', show_status: false }, 'de');
+  assert.deepEqual(
+    short.map((component) => component.type),
+    ['text', 'card-list'],
+  );
+  assert.equal(short[1].items.length, 3);
+  assert.equal(short[1].items[0].subtitle, 'Durchfahrt von AMBITION');
 });
 
-test('refreshWidgets nudges every widget', () => {
-  const fresh = createFakeGladys();
-  refreshWidgets(fresh);
-  assert.deepEqual(fresh.fake.widgetRefreshes, Object.keys(WIDGETS));
+test('the widget is titled with the name the device has in Gladys', async (t) => {
+  const world = await createWorld();
+  t.after(() => world.app.stop());
+  await world.gladys.fake.deviceCreated({ ...world.device(), name: 'Pont de la maison' });
+  const components = await get(world);
+  assert.equal(components[0].text, 'Pont de la maison');
+});
+
+test('nothing read yet, nothing announced', async (t) => {
+  const failing = await createWorld({ portal: fakePortal({ fail: true }) });
+  t.after(() => failing.app.stop());
+  assert.equal((await get(failing))[1].text, "Les fermetures n'ont pas encore été lues.");
+  const late = await createWorld({ at: '2027-01-10T10:00:00Z' });
+  t.after(() => late.app.stop());
+  assert.equal((await get(late, {}, 'es')).at(-1).text, 'Ningún cierre anunciado.');
+});
+
+test('the countdown reads days and hours, then hours and minutes', () => {
+  const text = WIDGET_TEXT.fr;
+  assert.equal(countdown(2 * 86_400_000 + 5 * 3_600_000, text), '2 j 5 h');
+  assert.equal(countdown(3_600_000 + 4 * 60_000, text), '1 h 04');
+  assert.equal(countdown(30_000, text), '0 h 01');
 });

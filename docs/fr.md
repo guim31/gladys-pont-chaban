@@ -1,67 +1,96 @@
-# Template de démonstration
+# Pont Chaban-Delmas
 
-Ceci est la documentation utilisateur de l'intégration. Gladys ré-héberge ce
-fichier et affiche un lien **Documentation** permanent vers lui dans l'écran
-de configuration (dans la langue de l'utilisateur, avec l'anglais en repli) —
-c'est au moment de configurer que l'utilisateur en a le plus besoin. Gardez
-les courtes indications d'accueil dans les blocs `section` du `config_schema`
-du manifest ; mettez ici le pas-à-pas détaillé (captures d'écran, dépannage…).
+Fermetures à la circulation du pont levant Chaban-Delmas, à Bordeaux, d'après l'open data de
+Bordeaux Métropole : le pont est-il fermé, les prochaines fermetures, et des alertes de scène la
+veille, à la fermeture et à la réouverture. Sans lien avec Bordeaux Métropole.
 
 ## Ce que vous obtenez
 
-Six appareils de démonstration apparaissent après l'installation : une
-station météo (vraies données Open-Meteo), un interrupteur, une lampe
-variable, une prise connectée avec mesure de puissance, un détecteur de
-mouvement et une caméra.
+- Un appareil **Pont Chaban-Delmas**, à ajouter depuis l'onglet **Découverte**.
+- Trois déclencheurs et une action de scène (Gladys 5.3 ou plus récent).
+- Un widget de tableau de bord **Fermetures du pont**.
+
+## Installation
+
+Rien à régler : le jeu de données est public, gratuit et sans compte. L'intégration le lit dès son
+démarrage.
 
 ## Configuration
 
-1. Ouvrez l'onglet **Configuration** de l'intégration.
-2. Renseignez la **latitude** et la **longitude** que la station météo de
-   démonstration doit observer (Paris par défaut), et choisissez votre unité
-   de température. L'**intervalle de rafraîchissement** règle la fréquence
-   de lecture de la station météo et de la puissance de la prise : toutes
-   les 5 minutes par défaut, toutes les minutes au plus.
-3. Enregistrez : les appareils apparaissent dans l'onglet **Découverte**,
-   prêts à être ajoutés.
+**Langue des textes** : langue des noms d'appareil et de fonctionnalités, des valeurs textuelles et
+des phrases de scène (français par défaut). Les noms sont fixés à la création : pour les renommer,
+supprimez puis rajoutez l'appareil.
 
-Le réglage **Préférer la connexion locale** pilote la prise de
-démonstration : elle affiche en badge le canal réellement utilisé (local ou
-cloud), avec un point orange quand elle fonctionne en mode dégradé (local
-refusé, bascule cloud).
+Le bouton **Vérifier** relit le planning tout de suite et affiche le nombre de fermetures à venir,
+la prochaine et la date de mise à jour du planning.
 
-## Actions
+## L'appareil
 
-- **Tester le fournisseur météo** — effectue une requête en direct vers
-  Open-Meteo et affiche la température et l'humidité actuelles sous le
-  bouton.
-- **Identifier un appareil** — choisissez un de vos appareils dans la liste
-  et il se signale (la lampe de démonstration « clignote » dans les logs).
+| Fonctionnalité               | Valeur                                                                                                                |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Fermé à la circulation       | 1 pendant une fermeture, 0 sinon                                                                                      |
+| Fermeture prévue aujourd'hui | 1 si une fermeture est en cours ou commence plus tard ce jour                                                         |
+| Prochaine fermeture          | Jour et heure de la prochaine fermeture (ou de celle en cours)                                                        |
+| Réouverture                  | Jour et heure de la réouverture                                                                                       |
+| Motif de la fermeture        | Nom du navire, MAINTENANCE ou événement, tel que publié                                                               |
+| Type de fermeture            | Totale ou partielle                                                                                                   |
+| Minutes avant la fermeture   | 0 pendant la fermeture ; à la minute les 2 dernières heures, au quart d'heure avant ; 527040 si aucune n'est annoncée |
+| Fermetures sous 7 jours      | Fermetures pas encore finies qui commencent sous 7 jours                                                              |
+| Planning mis à jour          | Dernière mise à jour du jeu par Bordeaux Métropole                                                                    |
+
+L'appareil suit l'horloge : il passe à fermé puis à ouvert aux heures prévues, même quand le
+portail open data est injoignable (le dernier planning lu est gardé dans `/data`).
 
 ## Scènes
 
-L'intégration ajoute ses propres cartes à l'éditeur de scènes (Gladys 5.1
-ou plus récent), dans la catégorie **Intégrations** :
+### Déclencheurs
 
-- **Mouvement détecté** (déclencheur) — lance la scène quand un détecteur
-  de démonstration voit bouger quelque chose. Choisissez éventuellement le
-  détecteur et ce qui a bougé (personne, animal) ; laissés vides, toute
-  détection correspond. Les actions suivantes peuvent lire ce qui a bougé
-  avec `{{triggerEvent.data.target}}`.
-- **Identifier un appareil** (action) — fait se signaler l'appareil choisi.
-  Elle indique si l'appareil a pu se signaler, pour que les actions
-  suivantes puissent en dépendre.
+- **Fermeture demain** : la veille d'une fermeture, à l'heure choisie (8 h, 12 h, 17 h à 22 h),
+  avec toutes les fermetures du lendemain. Variables : phrase prête à envoyer, nombre de
+  fermetures, jour, heures de la première fermeture et de sa réouverture, premier navire ou
+  événement, fermeture totale.
+- **Début de fermeture** : à l'heure prévue de fermeture.
+- **Fin de fermeture** : à l'heure prévue de réouverture.
+
+Ces deux-là donnent la phrase, le navire ou l'événement, le motif (`boat`, `maintenance`,
+`event`), les heures, la durée et si la fermeture est totale. Utilisez
+`{{triggerEvent.data.sentence}}` dans un message. Chaque événement part une seule fois, même après
+un redémarrage ; un événement manqué pendant un arrêt de plus de 10 minutes n'est pas envoyé en
+retard.
+
+### Action
+
+**Lire la prochaine levée** : une phrase comme « Prochaine fermeture du pont Chaban-Delmas :
+dimanche 8 novembre, de 07:00 à 15:00 (MARATHON DE BORDEAUX), fermeture totale. », ou « fermé
+jusqu'à… » pendant une fermeture. Sorties : phrase, fermé maintenant, minutes avant la fermeture
+(0 en cours, -1 aucune), début, fin, navire ou événement, totale.
 
 ## Tableau de bord
 
-Ajoutez le widget **État de la démo** à un tableau de bord : il affiche en
-direct la température de la station météo et la puissance de la prise du
-bureau, la connexion utilisée par la prise (en orange si dégradée) et la
-position observée. Son bouton **Identifier la lampe** fait se signaler la
-lampe de démonstration.
+Le widget **Fermetures du pont** indique si la circulation est ouverte ou fermée, le compte à
+rebours de la prochaine fermeture (ou l'heure de réouverture), et les 3, 5 ou 8 prochaines
+fermetures avec leur type. Un réglage masque l'état et le compte à rebours. Il prend le nom donné à
+l'appareil dans Gladys.
+
+## Données, limites et quotas
+
+- Source : jeu
+  [Pont Chaban - Prévisions - Fermeture](https://opendata.bordeaux-metropole.fr/explore/dataset/previsions_pont_chaban/)
+  de Bordeaux Métropole, Licence Ouverte (Etalab). Lu toutes les heures (toutes les 10 minutes après
+  un échec), deux requêtes à chaque fois, très loin des 50 000 appels par jour permis par le portail.
+- Ce sont des **prévisions** : un navire peut être en retard ou annulé, et le jeu est mis à jour à la
+  main, quelques fois par mois. Les horaires peuvent changer au dernier moment : vérifiez sur place.
+- Les heures sont celles de Bordeaux (Europe/Paris, changements d'heure compris), affichées dans le
+  fuseau de Gladys. Une réouverture plus tôt que la fermeture est lue comme le lendemain
+  (maintenance de nuit).
+- Le motif (navire, maintenance, événement) est déduit du libellé publié.
+- Aucun autre pont levant français ne publie ses fermetures en open data pour l'instant : cette
+  intégration ne couvre que Chaban-Delmas.
 
 ## Dépannage
 
-L'intégration journalise tout ce qu'elle fait : consultez les logs de
-l'intégration depuis l'interface Gladys (ou `docker logs` sur l'hôte) avec
-`LOG_LEVEL=debug` pour le détail complet.
+- **L'appareil reste vide** : le planning n'a pas encore été lu ; l'état de connexion de
+  l'intégration dit pourquoi. Appuyez sur **Vérifier**.
+- **« Injoignable »** : le portail open data est en panne ou votre Gladys n'a pas accès à Internet.
+  Le dernier planning lu reste utilisé.
+- Plus de détails dans les journaux de l'intégration, avec `LOG_LEVEL=debug`.

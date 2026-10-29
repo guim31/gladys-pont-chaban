@@ -1,0 +1,789 @@
+{
+  "total_count": 98,
+  "results": [
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-01-18",
+      "fermeture_a_la_circulation": "23:00",
+      "re_ouverture_a_la_circulation": "05:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-02-15",
+      "fermeture_a_la_circulation": "23:00",
+      "re_ouverture_a_la_circulation": "05:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-03-15",
+      "fermeture_a_la_circulation": "23:00",
+      "re_ouverture_a_la_circulation": "05:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BALMORAL",
+      "date_passage": "2026-04-10",
+      "fermeture_a_la_circulation": "11:49",
+      "re_ouverture_a_la_circulation": "13:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BALMORAL",
+      "date_passage": "2026-04-11",
+      "fermeture_a_la_circulation": "14:19",
+      "re_ouverture_a_la_circulation": "15:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "HANSEATIC NATURE",
+      "date_passage": "2026-04-13",
+      "fermeture_a_la_circulation": "04:04",
+      "re_ouverture_a_la_circulation": "05:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "HANSEATIC NATURE",
+      "date_passage": "2026-04-14",
+      "fermeture_a_la_circulation": "03:04",
+      "re_ouverture_a_la_circulation": "04:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEABOURN OVATION",
+      "date_passage": "2026-04-22",
+      "fermeture_a_la_circulation": "10:34",
+      "re_ouverture_a_la_circulation": "11:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEABOURN OVATION",
+      "date_passage": "2026-04-24",
+      "fermeture_a_la_circulation": "00:04",
+      "re_ouverture_a_la_circulation": "01:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "WORLD NAVIGATOR - PLASTIC ODYSSEY - JOHN PAUL DEJORIA",
+      "date_passage": "2026-04-25",
+      "fermeture_a_la_circulation": "13:04",
+      "re_ouverture_a_la_circulation": "14:32",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "WORLD NAVIGATOR",
+      "date_passage": "2026-04-26",
+      "fermeture_a_la_circulation": "14:49",
+      "re_ouverture_a_la_circulation": "16:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "LE BELLOT",
+      "date_passage": "2026-04-27",
+      "fermeture_a_la_circulation": "21:49",
+      "re_ouverture_a_la_circulation": "22:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "LE BELLOT - FRIDJTOF NANSEN",
+      "date_passage": "2026-04-29",
+      "fermeture_a_la_circulation": "18:34",
+      "re_ouverture_a_la_circulation": "20:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "FRIDJTOF NANSEN",
+      "date_passage": "2026-04-29",
+      "fermeture_a_la_circulation": "06:04",
+      "re_ouverture_a_la_circulation": "07:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "EUROPA 2",
+      "date_passage": "2026-05-06",
+      "fermeture_a_la_circulation": "09:34",
+      "re_ouverture_a_la_circulation": "10:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "EUROPA 2 - PLASTIC ODYSSEY- JOHN PAUL DEJORIA",
+      "date_passage": "2026-05-07",
+      "fermeture_a_la_circulation": "21:34",
+      "re_ouverture_a_la_circulation": "23:17",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-05-09",
+      "fermeture_a_la_circulation": "02:00",
+      "re_ouverture_a_la_circulation": "04:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEADREAM II",
+      "date_passage": "2026-05-10",
+      "fermeture_a_la_circulation": "13:34",
+      "re_ouverture_a_la_circulation": "14:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEADREAM II",
+      "date_passage": "2026-05-11",
+      "fermeture_a_la_circulation": "18:49",
+      "re_ouverture_a_la_circulation": "20:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AMBITION",
+      "date_passage": "2026-05-13",
+      "fermeture_a_la_circulation": "04:04",
+      "re_ouverture_a_la_circulation": "05:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "L'AUSTRAL",
+      "date_passage": "2026-05-13",
+      "fermeture_a_la_circulation": "16:49",
+      "re_ouverture_a_la_circulation": "17:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BSAM GARONNE",
+      "date_passage": "2026-05-14",
+      "fermeture_a_la_circulation": "17:54",
+      "re_ouverture_a_la_circulation": "19:02",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "L'AUSTRAL - AMBITION",
+      "date_passage": "2026-05-15",
+      "fermeture_a_la_circulation": "06:04",
+      "re_ouverture_a_la_circulation": "07:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AIDALUNA",
+      "date_passage": "2026-05-16",
+      "fermeture_a_la_circulation": "07:04",
+      "re_ouverture_a_la_circulation": "08:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AIDALUNA",
+      "date_passage": "2026-05-16",
+      "fermeture_a_la_circulation": "17:04",
+      "re_ouverture_a_la_circulation": "19:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-05-17",
+      "fermeture_a_la_circulation": "09:30",
+      "re_ouverture_a_la_circulation": "11:30",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MARINA - SCENIC ECLIPSE",
+      "date_passage": "2026-05-18",
+      "fermeture_a_la_circulation": "08:34",
+      "re_ouverture_a_la_circulation": "10:17",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MARINA",
+      "date_passage": "2026-05-20",
+      "fermeture_a_la_circulation": "21:04",
+      "re_ouverture_a_la_circulation": "22:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SH DIANA - SCENIC ECLIPSE - BSAM GARONNE",
+      "date_passage": "2026-05-20",
+      "fermeture_a_la_circulation": "09:59",
+      "re_ouverture_a_la_circulation": "11:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER SPIRIT",
+      "date_passage": "2026-05-21",
+      "fermeture_a_la_circulation": "10:34",
+      "re_ouverture_a_la_circulation": "11:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SH DIANA",
+      "date_passage": "2026-05-21",
+      "fermeture_a_la_circulation": "21:34",
+      "re_ouverture_a_la_circulation": "22:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "LE CHAMPLAIN",
+      "date_passage": "2026-05-22",
+      "fermeture_a_la_circulation": "10:34",
+      "re_ouverture_a_la_circulation": "11:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "LE CHAMPLAIN",
+      "date_passage": "2026-05-22",
+      "fermeture_a_la_circulation": "17:34",
+      "re_ouverture_a_la_circulation": "18:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER SPIRIT",
+      "date_passage": "2026-05-23",
+      "fermeture_a_la_circulation": "13:19",
+      "re_ouverture_a_la_circulation": "14:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BANQUE POPULAIRE XI",
+      "date_passage": "2026-05-25",
+      "fermeture_a_la_circulation": "15:04",
+      "re_ouverture_a_la_circulation": "16:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BANQUE POPULAIRE XI",
+      "date_passage": "2026-05-28",
+      "fermeture_a_la_circulation": "16:04",
+      "re_ouverture_a_la_circulation": "17:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER DAWN",
+      "date_passage": "2026-05-31",
+      "fermeture_a_la_circulation": "19:34",
+      "re_ouverture_a_la_circulation": "20:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "STAR LEGEND",
+      "date_passage": "2026-06-02",
+      "fermeture_a_la_circulation": "08:34",
+      "re_ouverture_a_la_circulation": "09:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER DAWN",
+      "date_passage": "2026-06-02",
+      "fermeture_a_la_circulation": "19:19",
+      "re_ouverture_a_la_circulation": "20:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "STAR LEGEND",
+      "date_passage": "2026-06-03",
+      "fermeture_a_la_circulation": "18:49",
+      "re_ouverture_a_la_circulation": "20:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "EUROPA - LAPEROUSE",
+      "date_passage": "2026-06-05",
+      "fermeture_a_la_circulation": "10:19",
+      "re_ouverture_a_la_circulation": "11:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "EUROPA - DF32 SEUDRE",
+      "date_passage": "2026-06-06",
+      "fermeture_a_la_circulation": "21:49",
+      "re_ouverture_a_la_circulation": "23:17",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "LAPEROUSE",
+      "date_passage": "2026-06-07",
+      "fermeture_a_la_circulation": "11:34",
+      "re_ouverture_a_la_circulation": "12:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "DF 32 SEUDRE",
+      "date_passage": "2026-06-08",
+      "fermeture_a_la_circulation": "12:34",
+      "re_ouverture_a_la_circulation": "13:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEVEN SEAS GRANDEUR",
+      "date_passage": "2026-06-10",
+      "fermeture_a_la_circulation": "02:19",
+      "re_ouverture_a_la_circulation": "03:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEVEN SEAS GRANDEUR",
+      "date_passage": "2026-06-11",
+      "fermeture_a_la_circulation": "16:04",
+      "re_ouverture_a_la_circulation": "17:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AZAMARA QUEST",
+      "date_passage": "2026-06-15",
+      "fermeture_a_la_circulation": "07:34",
+      "re_ouverture_a_la_circulation": "08:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AZAMARA QUEST",
+      "date_passage": "2026-06-17",
+      "fermeture_a_la_circulation": "19:19",
+      "re_ouverture_a_la_circulation": "20:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "EVRIMA",
+      "date_passage": "2026-06-24",
+      "fermeture_a_la_circulation": "02:49",
+      "re_ouverture_a_la_circulation": "03:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-06-29",
+      "fermeture_a_la_circulation": "22:00",
+      "re_ouverture_a_la_circulation": "05:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "CRYSTAL SERENITY - BELEM",
+      "date_passage": "2026-07-02",
+      "fermeture_a_la_circulation": "08:49",
+      "re_ouverture_a_la_circulation": "10:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "CRYSTAL SERENITY",
+      "date_passage": "2026-07-04",
+      "fermeture_a_la_circulation": "10:04",
+      "re_ouverture_a_la_circulation": "11:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BELEM",
+      "date_passage": "2026-07-09",
+      "fermeture_a_la_circulation": "05:00",
+      "re_ouverture_a_la_circulation": "07:30",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-08-09",
+      "fermeture_a_la_circulation": "23:00",
+      "re_ouverture_a_la_circulation": "05:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AIDASOL",
+      "date_passage": "2026-08-14",
+      "fermeture_a_la_circulation": "19:49",
+      "re_ouverture_a_la_circulation": "21:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AIDASOL",
+      "date_passage": "2026-08-14",
+      "fermeture_a_la_circulation": "09:04",
+      "re_ouverture_a_la_circulation": "10:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-08-19",
+      "fermeture_a_la_circulation": "23:00",
+      "re_ouverture_a_la_circulation": "05:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MV DEUTSCHLAND",
+      "date_passage": "2026-08-22",
+      "fermeture_a_la_circulation": "15:29",
+      "re_ouverture_a_la_circulation": "16:37",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MV DEUTSCHLAND",
+      "date_passage": "2026-08-23",
+      "fermeture_a_la_circulation": "14:04",
+      "re_ouverture_a_la_circulation": "15:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AZAMARA QUEST",
+      "date_passage": "2026-08-23",
+      "fermeture_a_la_circulation": "04:19",
+      "re_ouverture_a_la_circulation": "05:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AZAMARA QUEST - STAR LEGEND",
+      "date_passage": "2026-08-25",
+      "fermeture_a_la_circulation": "17:49",
+      "re_ouverture_a_la_circulation": "19:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "STAR LEGEND",
+      "date_passage": "2026-08-28",
+      "fermeture_a_la_circulation": "07:34",
+      "re_ouverture_a_la_circulation": "08:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "EVRIMA - SILVER SPIRIT",
+      "date_passage": "2026-08-31",
+      "fermeture_a_la_circulation": "09:34",
+      "re_ouverture_a_la_circulation": "11:52",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "EVRIMA",
+      "date_passage": "2026-09-01",
+      "fermeture_a_la_circulation": "09:44",
+      "re_ouverture_a_la_circulation": "11:07",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER SPIRIT",
+      "date_passage": "2026-09-02",
+      "fermeture_a_la_circulation": "10:34",
+      "re_ouverture_a_la_circulation": "11:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BALMORAL",
+      "date_passage": "2026-09-07",
+      "fermeture_a_la_circulation": "03:54",
+      "re_ouverture_a_la_circulation": "05:17",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BALMORAl",
+      "date_passage": "2026-09-08",
+      "fermeture_a_la_circulation": "16:34",
+      "re_ouverture_a_la_circulation": "17:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "OOSTERSCHELDE",
+      "date_passage": "2026-09-09",
+      "fermeture_a_la_circulation": "18:19",
+      "re_ouverture_a_la_circulation": "19:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEVEN SEAS MARINER",
+      "date_passage": "2026-09-10",
+      "fermeture_a_la_circulation": "07:14",
+      "re_ouverture_a_la_circulation": "08:37",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEVEN SEAS MARINER - SEADREAM II",
+      "date_passage": "2026-09-11",
+      "fermeture_a_la_circulation": "18:44",
+      "re_ouverture_a_la_circulation": "20:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEADREAM II",
+      "date_passage": "2026-09-12",
+      "fermeture_a_la_circulation": "16:19",
+      "re_ouverture_a_la_circulation": "17:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER SPIRIT",
+      "date_passage": "2026-09-12",
+      "fermeture_a_la_circulation": "08:34",
+      "re_ouverture_a_la_circulation": "09:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER SPIRIT",
+      "date_passage": "2026-09-13",
+      "fermeture_a_la_circulation": "19:49",
+      "re_ouverture_a_la_circulation": "21:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AIDASOL",
+      "date_passage": "2026-09-14",
+      "fermeture_a_la_circulation": "09:39",
+      "re_ouverture_a_la_circulation": "11:02",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AIDASOL",
+      "date_passage": "2026-09-14",
+      "fermeture_a_la_circulation": "21:34",
+      "re_ouverture_a_la_circulation": "01:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "OOSTERSCHELDE",
+      "date_passage": "2026-09-15",
+      "fermeture_a_la_circulation": "09:04",
+      "re_ouverture_a_la_circulation": "10:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MARINA - AUGUSTIN FRESNEL",
+      "date_passage": "2026-09-19",
+      "fermeture_a_la_circulation": "12:49",
+      "re_ouverture_a_la_circulation": "14:17",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MARINA - AUGUSTIN FRESNEL",
+      "date_passage": "2026-09-20",
+      "fermeture_a_la_circulation": "13:34",
+      "re_ouverture_a_la_circulation": "15:02",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BALMORAL",
+      "date_passage": "2026-09-21",
+      "fermeture_a_la_circulation": "03:04",
+      "re_ouverture_a_la_circulation": "04:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "BALMORAL",
+      "date_passage": "2026-09-22",
+      "fermeture_a_la_circulation": "16:04",
+      "re_ouverture_a_la_circulation": "17:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER DAWN",
+      "date_passage": "2026-09-23",
+      "fermeture_a_la_circulation": "05:34",
+      "re_ouverture_a_la_circulation": "06:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "INSIGNA",
+      "date_passage": "2026-09-25",
+      "fermeture_a_la_circulation": "07:04",
+      "re_ouverture_a_la_circulation": "08:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER DAWN",
+      "date_passage": "2026-09-25",
+      "fermeture_a_la_circulation": "17:49",
+      "re_ouverture_a_la_circulation": "19:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "INSIGNA",
+      "date_passage": "2026-09-26",
+      "fermeture_a_la_circulation": "17:04",
+      "re_ouverture_a_la_circulation": "18:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "LE LAPEROUSE",
+      "date_passage": "2026-10-01",
+      "fermeture_a_la_circulation": "16:49",
+      "re_ouverture_a_la_circulation": "17:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "LE LAPEROUSE",
+      "date_passage": "2026-10-02",
+      "fermeture_a_la_circulation": "18:34",
+      "re_ouverture_a_la_circulation": "19:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SEVEN SEAS GRANDEUR",
+      "date_passage": "2026-10-03",
+      "fermeture_a_la_circulation": "11:34",
+      "re_ouverture_a_la_circulation": "12:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "VIKING SATURN",
+      "date_passage": "2026-10-04",
+      "fermeture_a_la_circulation": "13:04",
+      "re_ouverture_a_la_circulation": "14:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "WORLD VOYAGER - VIKING SATURN - SEVEN SEAS GRANDEUR",
+      "date_passage": "2026-10-05",
+      "fermeture_a_la_circulation": "14:04",
+      "re_ouverture_a_la_circulation": "15:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "WORLD VOYAGER",
+      "date_passage": "2026-10-06",
+      "fermeture_a_la_circulation": "16:19",
+      "re_ouverture_a_la_circulation": "17:42",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER DAWN - LA BELLE POULE",
+      "date_passage": "2026-10-08",
+      "fermeture_a_la_circulation": "05:49",
+      "re_ouverture_a_la_circulation": "07:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "SILVER DAWN",
+      "date_passage": "2026-10-09",
+      "fermeture_a_la_circulation": "17:34",
+      "re_ouverture_a_la_circulation": "18:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "LA BELLE POULE",
+      "date_passage": "2026-10-11",
+      "fermeture_a_la_circulation": "19:04",
+      "re_ouverture_a_la_circulation": "20:27",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AMERA",
+      "date_passage": "2026-10-22",
+      "fermeture_a_la_circulation": "16:34",
+      "re_ouverture_a_la_circulation": "17:57",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "AMERA",
+      "date_passage": "2026-10-23",
+      "fermeture_a_la_circulation": "16:49",
+      "re_ouverture_a_la_circulation": "18:12",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MARATHON DE BORDEAUX",
+      "date_passage": "2026-11-08",
+      "fermeture_a_la_circulation": "07:00",
+      "re_ouverture_a_la_circulation": "15:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-11-15",
+      "fermeture_a_la_circulation": "23:00",
+      "re_ouverture_a_la_circulation": "05:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    },
+    {
+      "bateau": "MAINTENANCE",
+      "date_passage": "2026-12-13",
+      "fermeture_a_la_circulation": "23:00",
+      "re_ouverture_a_la_circulation": "05:00",
+      "type_de_fermeture": "Totale",
+      "fermeture_totale": "oui"
+    }
+  ]
+}

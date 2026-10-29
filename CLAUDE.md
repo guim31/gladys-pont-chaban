@@ -31,16 +31,22 @@ pushing.
 ## Architecture
 
 ```
-index.js                          SDK wiring only: handlers registered before connect()
-src/devices/index.js              registry of the device blueprints + dispatch helpers
-src/devices/<type>.js             one device type per file (buildDevice, onPoll, onSetValue...)
-src/scenes.js                     scene action handlers (manifest `scene_actions`)
+index.js                          SDK wiring only (src/app.js registers the handlers)
+src/app.js                        every SDK handler -> the service, the "Check" action
+src/service.js                    the clock: readings, cache, states, scene triggers, status
+src/opendata.js                   Bordeaux Métropole open data client + parser (records -> closures)
+src/closures.js                   running, next, within 7 days, starting on a local day
+src/device.js                     the bridge device and its states
 src/widgets.js                    dashboard widget handlers (manifest `widgets`)
+src/scenes.js                     scene action handlers (manifest `scene_actions`)
+src/i18n.js                       every text of the code, en/fr/de/es
+src/time.js                       Europe/Paris wall clock -> instants; displays in the Gladys zone
 src/config.js                     DEFAULT_CONFIG (mirrors the manifest defaults) + normalization
-src/weather.js                    example driver (Open-Meteo)
+src/store.js, src/failures.js     JSON files in /data; repeated failures logged once
 gladys-assistant-integration.json manifest: name, config_schema, actions, image...
-docs/en.md, docs/fr.md            user documentation, re-hosted by Gladys (mandatory)
+docs/{en,fr,de,es}.md             user documentation, re-hosted by Gladys (en and fr mandatory)
 test/                             node --test, against the SDK's fake Gladys (integration-sdk/testing)
+test/fixtures/opendata/           answers recorded from the portal on 2026-10-29
 .github/scripts/release.mjs       release helpers (manifest bump, changelog), tested in test/
 ```
 
@@ -70,8 +76,9 @@ test/                             node --test, against the SDK's fake Gladys (in
   `type: "provider"`: 5.1.0). `test/manifest.test.js` ties the manifest to the
   code (defaults, action, scene and widget handlers): change both sides
   together.
-- **User-facing text** is bilingual (English and French): action messages,
-  manifest texts, and `docs/en.md` / `docs/fr.md`, kept in sync.
+- **User-facing text** exists in English, French, German and Spanish: action
+  messages, manifest texts, code texts (`src/i18n.js`) and `docs/{en,fr,de,es}.md`,
+  kept in sync (`test/i18n.test.js`).
 - **Style.** Prettier formats, ESLint catches mistakes. Comments explain why,
   in English. Tests never touch the network.
 
@@ -250,3 +257,38 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Docs `en`, `fr`, `de`, `es` avec les mêmes sections.
 - Chauffe, ouverture, sécurité : ne rien rendre pilotable « comme un thermostat » ou par un assistant
   vocal quand une erreur serait dangereuse (leçon d'OctoPrint).
+
+## Pont Chaban-Delmas (cette intégration)
+
+- Source : Opendatasoft Explore **v2.1** de Bordeaux Métropole, sans clé,
+  `catalog/datasets/previsions_pont_chaban/records` (champs `bateau`, `date_passage`,
+  `fermeture_a_la_circulation`, `re_ouverture_a_la_circulation`, `type_de_fermeture`, `fermeture_totale`)
+  et `catalog/datasets/previsions_pont_chaban` pour `metas.default.data_processed` (date du planning).
+  Quota anonyme : **50 000 appels par jour** (en-têtes `x-ratelimit-*`, relevés le 29/10/2026). Lecture
+  toutes les heures, deux requêtes, filtrée par `where=date_passage >= date'<veille>'` (le jeu garde toute
+  l'année passée, ~100 lignes, et `limit` plafonne à 100).
+- Les heures sont des **heures murales de Bordeaux** : converties en instants par `zonedInstant` en
+  Europe/Paris, sans tzdata (ICU de Node). Nuit du changement d'heure d'automne : 02:30 existe deux fois,
+  on prend la première (heure d'été) ; au printemps 02:30 n'existe pas : lue avec le décalage d'hiver
+  (= 03:30 d'été). Une réouverture plus tôt que la fermeture est **le lendemain** (maintenance 23:00 →
+  05:00). Les affichages se font dans le fuseau de Gladys (`TZ`).
+- Au 29/10/2026, toutes les lignes sont « Totale » / « oui » : la fermeture partielle est lue d'après
+  `fermeture_totale` (`non`) ou `type_de_fermeture` (« Partielle… »), sans exemple réel.
+- Le libellé `bateau` est en capitales avec des coquilles (« BALMORAl ») : repassé en capitales. Le motif
+  (`boat`, `maintenance`, `event`) est déduit du libellé par expressions régulières (`MAINTENANCE`,
+  `MARATHON`…) : clés figées, dans les variables de scène.
+- Identifiant de l'appareil : `bridge:chaban-delmas` (liste `BRIDGES` de `src/device.js`, prête pour
+  d'autres ponts, mais aucun autre pont levant français n'a de flux ouvert en octobre 2026).
+- Déclencheurs : un événement par pont avec un champ `device` **facultatif** (vide = n'importe quel pont,
+  un seul événement par pont, donc jamais deux fois). « Fermeture demain » part à chaque heure de
+  `EVENING_HOURS` (le filtre `hour` choisit), la veille du **jour local de début** de fermeture. Les
+  événements partis sont mémorisés dans `/data/triggers.json` (clé `<déclencheur>|<id>`), rattrapage de
+  10 minutes après un redémarrage, un refus de Gladys est renvoyé à la minute suivante.
+- L'état « Fermé à la circulation » suit l'horloge, pas les lectures : le cache garde le planning si le
+  portail tombe.
+- Filtre de déclencheur `select` (`hour`, valeurs chaînes) et variable `number` de même clé : le cœur
+  convertit chaque côté selon son type déclaré (`coerceSceneValue` de
+  `externalIntegration.publishSceneEvent.js`) ; envoyer le nombre suffit.
+- « Minutes avant la fermeture » : à la minute dans les 2 dernières heures, au quart d'heure avant (pas un
+  état par minute pendant des jours), 527040 quand aucune fermeture n'est annoncée (jamais 0, qui veut dire
+  « en cours »). `triggers.json` n'est écrit qu'à un événement ou toutes les 5 minutes.
