@@ -53,6 +53,7 @@ const HEARTBEAT = 12 * HOUR;
 // After a restart, the triggers of the last minutes are still fired.
 const CATCH_UP = 10 * MINUTE;
 const FORGET_AFTER = 3 * 24 * HOUR;
+const SAVE_EVERY = 5 * MINUTE;
 
 const CACHE_FILE = 'cache.json';
 const TRIGGERS_FILE = 'triggers.json';
@@ -86,6 +87,7 @@ export class BridgeService {
     this.fired = {};
     this.lastCheck = 0;
     this.lastForce = 0;
+    this.savedAt = 0;
     // undefined: nothing reported yet (null is "no problem").
     this.statusKey = undefined;
     this.widgetKey = null;
@@ -113,8 +115,9 @@ export class BridgeService {
       // The clock runs whatever happens below: a failure at start-up must not
       // stop the readings and the triggers until the next restart.
       this.schedule();
-      await this.refresh();
+      // The device first: a portal that hangs must not keep it out of Discovery.
       await this.publishDevices();
+      await this.refresh();
       await this.publishStates({ force: true });
       await this.updateStatus();
       this.refreshWidget();
@@ -241,9 +244,13 @@ export class BridgeService {
     }
     try {
       const records = await this.api.records(now);
-      const modified = await this.api.modified();
       this.setRecords(records);
-      this.modified = modified ?? this.modified;
+      // The update date is cosmetic: its failure never discards the closures.
+      this.modified =
+        (await this.api.modified().catch((err) => {
+          logger.debug(`Could not read the update date: ${err.message}`);
+          return null;
+        })) ?? this.modified;
       this.fetchedAt = now;
       this.apiError = null;
       this.rateLimited = false;
@@ -345,11 +352,16 @@ export class BridgeService {
    */
   async fireTriggers() {
     const now = this.now();
-    const from = this.lastCheck;
+    // Nothing read yet: the interval stays open (10 minutes at most, below).
+    if (!this.closures()) {
+      return;
+    }
+    const from = Math.max(this.lastCheck, now - CATCH_UP);
     if (now <= from) {
       return; // the clock stepped back: this interval was already checked
     }
     this.lastCheck = now;
+    let changed = false;
     const device = deviceIds(this.gladys).device;
     let failedAt = null;
     for (const event of this.dueEvents(from, now)) {
@@ -358,6 +370,7 @@ export class BridgeService {
       }
       if (await this.fireEvent(event.key, { device, ...event.data() })) {
         this.fired[event.id] = event.at;
+        changed = true;
       } else {
         failedAt ??= event.at;
       }
@@ -368,9 +381,15 @@ export class BridgeService {
     for (const [id, at] of Object.entries(this.fired)) {
       if (at < now - FORGET_AFTER) {
         delete this.fired[id];
+        changed = true;
       }
     }
-    this.store.save(TRIGGERS_FILE, { lastCheck: this.lastCheck, fired: this.fired });
+    // Saved when something fired, and every 5 minutes for the catch-up after
+    // a restart (10 minutes): `fired` keeps an event from going twice.
+    if (changed || now - this.savedAt >= SAVE_EVERY) {
+      this.store.save(TRIGGERS_FILE, { lastCheck: this.lastCheck, fired: this.fired });
+      this.savedAt = now;
+    }
   }
 
   async fireEvent(key, data) {

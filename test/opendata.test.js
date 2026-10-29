@@ -164,3 +164,57 @@ test('the client turns failures into short messages', async () => {
   });
   await assert.rejects(broken.records(0), { message: /no list of closures/ });
 });
+
+test('two records for one closure make one, with both names', () => {
+  const closures = parseClosures([
+    {
+      bateau: 'BELEM',
+      date_passage: '2026-07-09',
+      fermeture_a_la_circulation: '05:00',
+      re_ouverture_a_la_circulation: '07:00',
+      fermeture_totale: 'oui',
+    },
+    {
+      bateau: 'MARATHON',
+      date_passage: '2026-07-09',
+      fermeture_a_la_circulation: '05:00',
+      re_ouverture_a_la_circulation: '07:30',
+      fermeture_totale: 'oui',
+    },
+    {
+      bateau: 'BELEM',
+      date_passage: '2026-07-09',
+      fermeture_a_la_circulation: '05:00',
+      re_ouverture_a_la_circulation: '07:00',
+      fermeture_totale: 'oui',
+    },
+  ]);
+  assert.equal(closures.length, 1);
+  assert.equal(closures[0].label, 'BELEM - MARATHON');
+  assert.equal(closures[0].reason, 'event');
+  assert.equal(iso(closures[0].end), '2026-07-09T05:30:00.000Z');
+});
+
+test('a closure starting in the spring-forward gap is not stretched to a day', () => {
+  const closures = parseClosures([
+    {
+      bateau: 'X',
+      date_passage: '2027-03-28',
+      fermeture_a_la_circulation: '02:30',
+      re_ouverture_a_la_circulation: '03:10',
+      fermeture_totale: 'oui',
+    },
+    {
+      bateau: 'Y',
+      date_passage: '2027-03-28',
+      fermeture_a_la_circulation: '02:30',
+      re_ouverture_a_la_circulation: '04:00',
+      fermeture_totale: 'oui',
+    },
+  ]);
+  // 02:30 does not exist (it is 03:30): 03:10 is before it, the record is left out.
+  assert.deepEqual(
+    closures.map((closure) => [iso(closure.start), iso(closure.end)]),
+    [['2027-03-28T01:30:00.000Z', '2027-03-28T02:00:00.000Z']],
+  );
+});

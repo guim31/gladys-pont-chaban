@@ -26,17 +26,17 @@ el próximo y la fecha de actualización del calendario.
 
 ## El dispositivo
 
-| Función                  | Valor                                                       |
-| ------------------------ | ----------------------------------------------------------- |
-| Cerrado al tráfico ahora | 1 durante un cierre, 0 si no                                |
-| Cierre previsto hoy      | 1 si hay un cierre en curso o que empieza más tarde hoy     |
-| Próximo cierre           | Día y hora del próximo cierre (o del cierre en curso)       |
-| Reapertura               | Día y hora de la reapertura                                 |
-| Motivo del cierre        | Nombre del barco, MAINTENANCE o evento, tal como se publica |
-| Tipo de cierre           | Total o parcial                                             |
-| Minutos hasta el cierre  | 0 mientras está en curso                                    |
-| Cierres en 7 días        | Cierres no terminados que empiezan en los próximos 7 días   |
-| Calendario actualizado   | Última actualización del conjunto por Bordeaux Métropole    |
+| Función                  | Valor                                                                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Cerrado al tráfico ahora | 1 durante un cierre, 0 si no                                                                                              |
+| Cierre previsto hoy      | 1 si hay un cierre en curso o que empieza más tarde hoy                                                                   |
+| Próximo cierre           | Día y hora del próximo cierre (o del cierre en curso)                                                                     |
+| Reapertura               | Día y hora de la reapertura                                                                                               |
+| Motivo del cierre        | Nombre del barco, MAINTENANCE o evento, tal como se publica                                                               |
+| Tipo de cierre           | Total o parcial                                                                                                           |
+| Minutos hasta el cierre  | 0 mientras está en curso; al minuto en las 2 últimas horas, por cuartos de hora antes; 527040 si no hay ninguno anunciado |
+| Cierres en 7 días        | Cierres no terminados que empiezan en los próximos 7 días                                                                 |
+| Calendario actualizado   | Última actualización del conjunto por Bordeaux Métropole                                                                  |
 
 El dispositivo sigue el reloj: pasa a cerrado y vuelve a abierto a las horas previstas, incluso
 cuando el portal de datos abiertos no responde (el último calendario leído se guarda en `/data`).

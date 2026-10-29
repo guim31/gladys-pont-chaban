@@ -26,17 +26,17 @@ die nächste und das Datum der Aktualisierung.
 
 ## Das Gerät
 
-| Funktion                   | Wert                                                           |
-| -------------------------- | -------------------------------------------------------------- |
-| Jetzt für Verkehr gesperrt | 1 während einer Sperrung, sonst 0                              |
-| Sperrung heute noch        | 1, wenn eine Sperrung läuft oder heute noch beginnt            |
-| Nächste Sperrung           | Tag und Uhrzeit der nächsten (oder laufenden) Sperrung         |
-| Wiederöffnung              | Tag und Uhrzeit der Wiederöffnung                              |
-| Grund der Sperrung         | Schiffsname, MAINTENANCE oder Ereignis, wie veröffentlicht     |
-| Art der Sperrung           | Vollständig oder teilweise                                     |
-| Minuten bis zur Sperrung   | 0, solange sie läuft                                           |
-| Sperrungen in 7 Tagen      | Noch nicht beendete Sperrungen, die in 7 Tagen beginnen        |
-| Plan aktualisiert          | Letzte Aktualisierung des Datensatzes durch Bordeaux Métropole |
+| Funktion                   | Wert                                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Jetzt für Verkehr gesperrt | 1 während einer Sperrung, sonst 0                                                                                        |
+| Sperrung heute noch        | 1, wenn eine Sperrung läuft oder heute noch beginnt                                                                      |
+| Nächste Sperrung           | Tag und Uhrzeit der nächsten (oder laufenden) Sperrung                                                                   |
+| Wiederöffnung              | Tag und Uhrzeit der Wiederöffnung                                                                                        |
+| Grund der Sperrung         | Schiffsname, MAINTENANCE oder Ereignis, wie veröffentlicht                                                               |
+| Art der Sperrung           | Vollständig oder teilweise                                                                                               |
+| Minuten bis zur Sperrung   | 0, solange sie läuft; in den letzten 2 Stunden minutengenau, davor in Viertelstunden; 527040, wenn keine angekündigt ist |
+| Sperrungen in 7 Tagen      | Noch nicht beendete Sperrungen, die in 7 Tagen beginnen                                                                  |
+| Plan aktualisiert          | Letzte Aktualisierung des Datensatzes durch Bordeaux Métropole                                                           |
 
 Das Gerät folgt der Uhr: Es wechselt zu den geplanten Zeiten auf gesperrt und zurück auf offen,
 auch wenn das Open-Data-Portal nicht erreichbar ist (der zuletzt gelesene Plan bleibt in `/data`).

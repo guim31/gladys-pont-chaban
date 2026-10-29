@@ -13,7 +13,7 @@ import { MINUTE, formatDateTime } from './time.js';
 
 const TEXT = { category: 'text', type: 'text', min: 0, max: 0 };
 const BINARY = { category: 'input', type: 'binary', min: 0, max: 1 };
-const MAX_MINUTES = 527_040; // 366 days
+export const MAX_MINUTES = 527_040; // 366 days
 
 /** The bridges of the integration (one device each). Keys are forever. */
 export const BRIDGES = [{ key: 'chaban-delmas', source: 'Bordeaux Métropole' }];
@@ -66,6 +66,16 @@ export function buildDevices(gladys, config) {
   });
 }
 
+/**
+ * Minutes until a closure: 0 while it runs, to the minute in the last two
+ * hours, by quarters of an hour before (a state a minute for days would only
+ * fill the history). MAX_MINUTES when none is announced, never 0.
+ */
+export function countdownMinutes(left) {
+  const minutes = Math.max(0, Math.ceil(left / MINUTE));
+  return Math.min(MAX_MINUTES, minutes <= 120 ? minutes : minutes - (minutes % 15));
+}
+
 /** "MARATHON DE BORDEAUX", "passage de BALMORAL", "maintenance". */
 export function why(closure, language) {
   return REASON_TEXT[language][closure.reason](closure.label);
@@ -99,12 +109,7 @@ export function buildStates(gladys, config, { closures, modified }, { now, timeZ
   string('next_end', next && formatDateTime(next.end, language, timeZone));
   string('next_reason', next && next.label);
   string('next_type', next && (next.total ? text.total : text.partial));
-  if (next) {
-    number(
-      'next_countdown',
-      Math.min(MAX_MINUTES, Math.max(0, Math.ceil((next.start - now) / MINUTE))),
-    );
-  }
+  number('next_countdown', next ? countdownMinutes(next.start - now) : MAX_MINUTES);
   number('closures_7_days', Math.min(100, withinWeek(closures, now).length));
   if (modified) {
     string('data_updated', formatDateTime(modified, language, timeZone));

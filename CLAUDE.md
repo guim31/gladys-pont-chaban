@@ -286,3 +286,9 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
   10 minutes après un redémarrage, un refus de Gladys est renvoyé à la minute suivante.
 - L'état « Fermé à la circulation » suit l'horloge, pas les lectures : le cache garde le planning si le
   portail tombe.
+- Filtre de déclencheur `select` (`hour`, valeurs chaînes) et variable `number` de même clé : le cœur
+  convertit chaque côté selon son type déclaré (`coerceSceneValue` de
+  `externalIntegration.publishSceneEvent.js`) ; envoyer le nombre suffit.
+- « Minutes avant la fermeture » : à la minute dans les 2 dernières heures, au quart d'heure avant (pas un
+  état par minute pendant des jours), 527040 quand aucune fermeture n'est annoncée (jamais 0, qui veut dire
+  « en cours »). `triggers.json` n'est écrit qu'à un événement ou toutes les 5 minutes.

@@ -21,7 +21,7 @@ test('the states of the device, before and during a closure', async (t) => {
   assert.deepEqual(world.state('next_end'), 'mer. 13 mai · 05:27');
   assert.deepEqual(world.state('next_reason'), 'AMBITION');
   assert.deepEqual(world.state('next_type'), 'Totale');
-  assert.deepEqual(world.state('next_countdown'), 964);
+  assert.deepEqual(world.state('next_countdown'), 960, '16 h 04, by quarters of an hour');
   assert.deepEqual(world.state('closures_7_days'), 8);
   assert.deepEqual(world.state('data_updated'), 'ven. 23 oct. · 15:29');
 
@@ -201,4 +201,41 @@ test('the language setting renames the device and its texts', async (t) => {
   await world.gladys.fake.configUpdated({ language: 'es' });
   assert.equal(world.gladys.fake.discoveredDevices.at(-1).name, 'Puente Chaban-Delmas');
   assert.deepEqual(world.state('next_type'), 'Total');
+});
+
+test('the update date failing never discards the closures', async (t) => {
+  const portal = fakePortal();
+  const fetch = portal.fetch;
+  portal.fetch = async (url) => {
+    if (!new URL(url).pathname.endsWith('/records')) {
+      throw new TypeError('fetch failed');
+    }
+    return fetch(url);
+  };
+  const world = await createWorld({ portal });
+  t.after(() => world.app.stop());
+  assert.deepEqual(world.state('next_reason'), 'AMBITION');
+  assert.equal(world.state('data_updated'), undefined);
+  assert.equal(world.gladys.fake.connectionStatus.connected, true);
+});
+
+test('the countdown: by quarters of an hour, to the minute in the last two hours, never 0 without closure', async (t) => {
+  const world = await createWorld({ at: '2026-05-13T00:00:00Z' }); // 02:00, AMBITION at 04:04
+  t.after(() => world.app.stop());
+  assert.equal(world.state('next_countdown'), 120, '124 minutes, by quarters');
+  await world.runUntil('2026-05-13T00:05:00Z');
+  assert.equal(world.state('next_countdown'), 119);
+  const late = await createWorld({ at: '2027-01-10T10:00:00Z' });
+  t.after(() => late.app.stop());
+  assert.equal(late.state('next_countdown'), 527_040);
+});
+
+test('a first reading that fails does not lose the events of the next minutes', async (t) => {
+  const portal = fakePortal({ fail: true });
+  const world = await createWorld({ portal, at: '2026-05-13T02:00:00Z' });
+  t.after(() => world.app.stop());
+  // Read again 10 minutes later: AMBITION closed at 04:04, 6 minutes ago.
+  portal.fail = false;
+  await world.runUntil('2026-05-13T02:10:00Z');
+  assert.deepEqual(keys(world), [TRIGGERS.CLOSURE_STARTED]);
 });

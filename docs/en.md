@@ -26,17 +26,17 @@ next one and the date the schedule was updated.
 
 ## The device
 
-| Feature                   | Value                                                    |
-| ------------------------- | -------------------------------------------------------- |
-| Closed to traffic now     | 1 during a closure, 0 otherwise                          |
-| Closure still due today   | 1 when a closure is running or starts later today        |
-| Next closure              | Day and time of the next closure (or of the running one) |
-| Reopening                 | Day and time it reopens                                  |
-| Reason of the closure     | Boat name, MAINTENANCE or event, as published            |
-| Type of closure           | Total or partial                                         |
-| Minutes until the closure | 0 while it is running                                    |
-| Closures within 7 days    | Closures not over yet that start within 7 days           |
-| Schedule updated          | When Bordeaux Métropole last updated the dataset         |
+| Feature                   | Value                                                                                                            |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Closed to traffic now     | 1 during a closure, 0 otherwise                                                                                  |
+| Closure still due today   | 1 when a closure is running or starts later today                                                                |
+| Next closure              | Day and time of the next closure (or of the running one)                                                         |
+| Reopening                 | Day and time it reopens                                                                                          |
+| Reason of the closure     | Boat name, MAINTENANCE or event, as published                                                                    |
+| Type of closure           | Total or partial                                                                                                 |
+| Minutes until the closure | 0 while running; to the minute in the last 2 hours, by quarters of an hour before; 527040 when none is announced |
+| Closures within 7 days    | Closures not over yet that start within 7 days                                                                   |
+| Schedule updated          | When Bordeaux Métropole last updated the dataset                                                                 |
 
 The device follows the clock: it switches to closed and back to open at the scheduled times, even
 when the open data portal cannot be reached (the last schedule read is kept in `/data`).

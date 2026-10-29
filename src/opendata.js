@@ -95,6 +95,12 @@ export function createOpenData({ fetch = globalThis.fetch, base } = {}) {
   };
 }
 
+/** "23:00" → 1380 (minutes since midnight on the wall clock). */
+function wallMinutes(time) {
+  const match = /^(\d{1,2})[:hH](\d{2})$/.exec(time);
+  return match ? Number(match[1]) * 60 + Number(match[2]) : NaN;
+}
+
 /** "Seadream  ii " → "SEADREAM II" (the dataset is in capitals, with typos). */
 export function cleanLabel(value) {
   return String(value ?? '')
@@ -126,14 +132,13 @@ export function parseClosures(records) {
   for (const record of Array.isArray(records) ? records : []) {
     const date = String(record?.date_passage ?? '').slice(0, 10);
     const closing = String(record?.fermeture_a_la_circulation ?? '').trim();
+    const reopening = String(record?.re_ouverture_a_la_circulation ?? '').trim();
     const start = zonedInstant(date, closing);
-    let end = zonedInstant(date, record?.re_ouverture_a_la_circulation);
-    if (start === null || end === null) {
+    // Reopened at or before the closing time on the wall clock: after midnight.
+    const overnight = wallMinutes(reopening) <= wallMinutes(closing);
+    const end = zonedInstant(overnight ? nextDate(date) : date, reopening);
+    if (start === null || end === null || end <= start) {
       continue;
-    }
-    if (end <= start) {
-      // Reopened after midnight: the same wall-clock time, the next day.
-      end = zonedInstant(nextDate(date), record.re_ouverture_a_la_circulation);
     }
     const label = cleanLabel(record.bateau) || 'MAINTENANCE';
     const kind = String(record.type_de_fermeture ?? '').toLowerCase();
@@ -142,9 +147,18 @@ export function parseClosures(records) {
       .toLowerCase();
     const total = flag ? flag === 'oui' : !kind.startsWith('partiel');
     const id = `${date}T${closing.padStart(5, '0')}`;
-    if (!closures.has(id)) {
-      closures.set(id, { id, start, end, label, reason: reasonOf(label), total });
+    const same = closures.get(id);
+    if (same) {
+      // Two records for one closure: one closure, both names, the longest.
+      if (!same.label.split(' - ').includes(label)) {
+        same.label = `${same.label} - ${label}`.slice(0, 120);
+        same.reason = reasonOf(same.label);
+      }
+      same.end = Math.max(same.end, end);
+      same.total ||= total;
+      continue;
     }
+    closures.set(id, { id, start, end, label, reason: reasonOf(label), total });
   }
   return [...closures.values()].sort((a, b) => a.start - b.start || a.end - b.end);
 }

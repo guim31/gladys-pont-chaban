@@ -26,17 +26,17 @@ la prochaine et la date de mise à jour du planning.
 
 ## L'appareil
 
-| Fonctionnalité               | Valeur                                                         |
-| ---------------------------- | -------------------------------------------------------------- |
-| Fermé à la circulation       | 1 pendant une fermeture, 0 sinon                               |
-| Fermeture prévue aujourd'hui | 1 si une fermeture est en cours ou commence plus tard ce jour  |
-| Prochaine fermeture          | Jour et heure de la prochaine fermeture (ou de celle en cours) |
-| Réouverture                  | Jour et heure de la réouverture                                |
-| Motif de la fermeture        | Nom du navire, MAINTENANCE ou événement, tel que publié        |
-| Type de fermeture            | Totale ou partielle                                            |
-| Minutes avant la fermeture   | 0 pendant la fermeture                                         |
-| Fermetures sous 7 jours      | Fermetures pas encore finies qui commencent sous 7 jours       |
-| Planning mis à jour          | Dernière mise à jour du jeu par Bordeaux Métropole             |
+| Fonctionnalité               | Valeur                                                                                                                |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Fermé à la circulation       | 1 pendant une fermeture, 0 sinon                                                                                      |
+| Fermeture prévue aujourd'hui | 1 si une fermeture est en cours ou commence plus tard ce jour                                                         |
+| Prochaine fermeture          | Jour et heure de la prochaine fermeture (ou de celle en cours)                                                        |
+| Réouverture                  | Jour et heure de la réouverture                                                                                       |
+| Motif de la fermeture        | Nom du navire, MAINTENANCE ou événement, tel que publié                                                               |
+| Type de fermeture            | Totale ou partielle                                                                                                   |
+| Minutes avant la fermeture   | 0 pendant la fermeture ; à la minute les 2 dernières heures, au quart d'heure avant ; 527040 si aucune n'est annoncée |
+| Fermetures sous 7 jours      | Fermetures pas encore finies qui commencent sous 7 jours                                                              |
+| Planning mis à jour          | Dernière mise à jour du jeu par Bordeaux Métropole                                                                    |
 
 L'appareil suit l'horloge : il passe à fermé puis à ouvert aux heures prévues, même quand le
 portail open data est injoignable (le dernier planning lu est gardé dans `/data`).
