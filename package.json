@@ -1,8 +1,8 @@
 {
-  "name": "gladys-integration-template-js",
+  "name": "gladys-pont-chaban",
   "version": "1.0.0",
   "private": true,
-  "description": "Official starter template to build an external integration for Gladys Assistant with the JavaScript SDK.",
+  "description": "Closures of the Chaban-Delmas lift bridge in Bordeaux for Gladys Assistant: device, scene triggers and a widget, from Bordeaux Métropole open data.",
   "type": "module",
   "main": "index.js",
   "scripts": {

@@ -1,93 +1,68 @@
+// -----------------------------------------------------------------------------
+// The scene action "Read the next closure", and the "Check" action report.
+// -----------------------------------------------------------------------------
+
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-import { createFakeGladys } from '@gladysassistant/integration-sdk/testing';
-import { DEVICE_BLUEPRINTS } from '../src/devices/index.js';
-import { MOTION_DETECTED_TRIGGER, motionSensor } from '../src/devices/motionSensor.js';
-import { SCENE_ACTIONS } from '../src/scenes.js';
-import { normalizeConfig } from '../src/config.js';
+import { createWorld } from './helpers/world.js';
 
-const manifest = JSON.parse(
-  await readFile(new URL('../gladys-assistant-integration.json', import.meta.url), 'utf8'),
-);
-const config = normalizeConfig();
+const read = async (world) => {
+  const ack = await world.gladys.fake.sceneAction('read_next_closure', {});
+  assert.equal(ack.success, true, ack.error);
+  return ack.data.outputs;
+};
 
-const declarationOf = (list, key) => manifest[list].find((entry) => entry.key === key);
-const keysOf = (list) => (list ?? []).map((entry) => entry.key);
-const deviceIdOf = (gladys, key) =>
-  DEVICE_BLUEPRINTS.find((bp) => bp.key === key).deviceExternalId(gladys);
-
-// Let the async interval callback run to completion.
-const flush = () => new Promise((resolve) => setImmediate(resolve));
-
-test('the motion sensor fires one motion_detected event per detection, none on the clear', async (t) => {
-  t.mock.timers.enable({ apis: ['setInterval', 'setTimeout'] });
-  const gladys = createFakeGladys();
-  const stopPush = motionSensor.startPush(gladys, config);
-  try {
-    t.mock.timers.tick(60_000);
-    await flush();
-    assert.equal(gladys.fake.sceneEvents.length, 1, 'one detection, one event');
-    assert.equal(gladys.fake.sceneEvents[0].key, MOTION_DETECTED_TRIGGER);
-    assert.equal(gladys.fake.states.at(-1).state, 1, 'the state is still published');
-
-    t.mock.timers.tick(10_000);
-    await flush();
-    assert.equal(gladys.fake.states.at(-1).state, 0, 'the detection is cleared');
-    assert.equal(gladys.fake.sceneEvents.length, 1, 'the clear fires no event');
-  } finally {
-    stopPush();
-  }
+test('the next closure in one sentence', async (t) => {
+  const world = await createWorld();
+  t.after(() => world.app.stop());
+  assert.deepEqual(await read(world), {
+    sentence:
+      'Prochaine fermeture du pont Chaban-Delmas : mercredi 13 mai, de 04:04 à 05:27 (passage de AMBITION), fermeture totale.',
+    closed_now: false,
+    minutes_until: 964,
+    start: 'mer. 13 mai · 04:04',
+    end: 'mer. 13 mai · 05:27',
+    reason: 'AMBITION',
+    total: true,
+  });
 });
 
-test('motion_detected data only carries keys the trigger declares', async (t) => {
-  t.mock.timers.enable({ apis: ['setInterval', 'setTimeout'] });
-  const gladys = createFakeGladys();
-  const stopPush = motionSensor.startPush(gladys, config);
-  try {
-    t.mock.timers.tick(60_000);
-    await flush();
-  } finally {
-    stopPush();
-  }
-  const [{ data }] = gladys.fake.sceneEvents;
-  const trigger = declarationOf('scene_triggers', MOTION_DETECTED_TRIGGER);
-  // The core keeps the `fields` keys (filters) and the `variables` keys
-  // (exposed to the scene): any other key would be silently dropped.
-  const declared = [...keysOf(trigger.fields), ...keysOf(trigger.variables)];
-  for (const [key, value] of Object.entries(data)) {
-    assert.ok(declared.includes(key), `data.${key} is not declared, the core would drop it`);
-    assert.ok(value === null || typeof value !== 'object', `data.${key} must be a primitive`);
-  }
-  // A `"source": "devices"` filter stores a device external_id.
-  assert.equal(data.device, deviceIdOf(gladys, 'motion-sensor'));
-  const targets = trigger.fields.find((field) => field.key === 'target').options;
-  assert.ok(
-    targets.some((option) => option.value === data.target),
-    `data.target "${data.target}" must be one of the filter options`,
+test('during a night closure, the sentence says until when', async (t) => {
+  const world = await createWorld({ at: '2026-11-15T22:30:00Z', config: { language: 'en' } });
+  t.after(() => world.app.stop());
+  const outputs = await read(world);
+  assert.equal(
+    outputs.sentence,
+    'The Chaban-Delmas bridge is closed to traffic until 05:00 (Monday, November 16) (maintenance), total closure.',
   );
+  assert.equal(outputs.closed_now, true);
+  assert.equal(outputs.minutes_until, 0);
 });
 
-test('identify_device signals the chosen device and returns the declared outputs', async () => {
-  const gladys = createFakeGladys();
-  const outputs = await SCENE_ACTIONS.identify_device(gladys, {
-    fields: { device: deviceIdOf(gladys, 'light') },
-    config,
-  });
-  assert.deepEqual(outputs, { signalled: true });
-  const declared = keysOf(declarationOf('scene_actions', 'identify_device').outputs);
-  for (const key of Object.keys(outputs)) {
-    assert.ok(declared.includes(key), `output "${key}" is not declared, the core would drop it`);
-  }
+test('nothing announced', async (t) => {
+  const world = await createWorld({ at: '2027-01-10T10:00:00Z', config: { language: 'es' } });
+  t.after(() => world.app.stop());
+  const outputs = await read(world);
+  assert.equal(outputs.sentence, 'No hay ningún cierre del puente Chaban-Delmas anunciado.');
+  assert.equal(outputs.minutes_until, -1);
 });
 
-test('identify_device reports a device that cannot signal itself through its output', async () => {
-  // Not a failure: a scene action is never a condition, the scene author
-  // gates the following actions on the output instead.
-  const gladys = createFakeGladys();
-  const outputs = await SCENE_ACTIONS.identify_device(gladys, {
-    fields: { device: deviceIdOf(gladys, 'weather-station') },
-    config,
-  });
-  assert.deepEqual(outputs, { signalled: false });
+test('"Check" reads again and reports in four languages', async (t) => {
+  const world = await createWorld({ at: '2026-10-29T10:00:00Z' });
+  t.after(() => world.app.stop());
+  const calls = world.portal.calls.length;
+  const ack = await world.gladys.fake.action('check', {});
+  assert.equal(ack.success, true, ack.error);
+  assert.equal(world.portal.calls.length, calls + 2);
+  assert.equal(
+    ack.data.message.fr,
+    [
+      'Bordeaux Métropole : 3 fermetures à venir.',
+      'Prochaine fermeture du pont Chaban-Delmas : dimanche 8 novembre, de 07:00 à 15:00 (MARATHON DE BORDEAUX), fermeture totale.',
+      'Planning mis à jour le ven. 23 oct. · 15:29.',
+      '',
+      "Données lues à l'instant.",
+    ].join('\n'),
+  );
+  assert.deepEqual(Object.keys(ack.data.message).sort(), ['de', 'en', 'es', 'fr']);
 });

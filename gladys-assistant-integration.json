@@ -1,177 +1,724 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "Pont Chaban-Delmas",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "Closures of the Chaban-Delmas lift bridge in Bordeaux: closed now, next ones, scene alerts.",
+    "fr": "Fermetures du pont levant Chaban-Delmas à Bordeaux : état, prochaines levées, alertes de scène.",
+    "de": "Sperrungen der Hubbrücke Chaban-Delmas in Bordeaux: jetzt gesperrt, nächste, Szenenalarme.",
+    "es": "Cierres del puente levadizo Chaban-Delmas en Burdeos: estado, próximos cierres, alertas."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
-  "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "docker_image": "ghcr.io/guim31/gladys-pont-chaban:1.0.0",
+  "gladys_version": ">=5.3.0",
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-pont-chaban/main/cover.png",
+  "categories": ["services"],
+  "countries": ["FR"],
+  "transports": ["cloud"],
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "How it works",
+        "fr": "Fonctionnement",
+        "de": "So funktioniert es",
+        "es": "Funcionamiento"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "Closures come from the Bordeaux Métropole open data (Licence Ouverte), free and without an account. The integration reads them every hour; times are Bordeaux times, shown in the Gladys time zone.",
+        "fr": "Les fermetures viennent de l'open data de Bordeaux Métropole (Licence Ouverte), gratuit et sans compte. L'intégration les lit toutes les heures ; heures de Bordeaux, affichées dans le fuseau de Gladys.",
+        "de": "Die Sperrungen stammen aus den Open Data von Bordeaux Métropole (Licence Ouverte), kostenlos und ohne Konto. Die Integration liest sie stündlich; Uhrzeiten aus Bordeaux, in der Zeitzone von Gladys angezeigt.",
+        "es": "Los cierres proceden de los datos abiertos de Bordeaux Métropole (Licence Ouverte), gratuitos y sin cuenta. La integración los lee cada hora; horas de Burdeos, mostradas en la zona horaria de Gladys."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://opendata.bordeaux-metropole.fr/explore/dataset/previsions_pont_chaban/",
+          "label": {
+            "en": "Dataset",
+            "fr": "Jeu de données",
+            "de": "Datensatz",
+            "es": "Conjunto de datos"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
-      },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
-      "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
-    },
-    {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
-      "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
-      },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
-    },
-    {
-      "key": "unit",
+      "key": "language",
       "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
-      "required": false,
-      "default": "celsius",
-      "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
-      ]
-    },
-    {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "display": "radio",
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "Language of the device and feature names, of the text values and of the scene sentences. Names are set when the device is created: to rename them, delete and re-add the device.",
+        "fr": "Langue des noms d'appareil et de fonctionnalités, des valeurs textuelles et des phrases de scène. Les noms sont fixés à la création : pour les renommer, supprimez puis rajoutez l'appareil.",
+        "de": "Sprache der Geräte- und Funktionsnamen, der Textwerte und der Szenensätze. Die Namen werden beim Anlegen festgelegt: Zum Umbenennen lösche das Gerät und füge es erneut hinzu.",
+        "es": "Idioma de los nombres del dispositivo y de las funciones, de los valores de texto y de las frases de escena. Los nombres se fijan al crearlos: para cambiarlos, elimine el dispositivo y vuelva a añadirlo."
       },
       "required": false,
-      "default": 300,
-      "min": 60,
-      "max": 3600
+      "default": "fr",
+      "options": [
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
+      ]
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
-      "timeout_seconds": 30
-    },
+      "key": "check",
+      "label": {
+        "en": "Check",
+        "fr": "Vérifier",
+        "de": "Prüfen",
+        "es": "Comprobar"
+      },
+      "description": {
+        "en": "Reads the Bordeaux Métropole schedule again now and shows the next closure.",
+        "fr": "Relit maintenant le planning de Bordeaux Métropole et affiche la prochaine fermeture.",
+        "de": "Liest den Plan von Bordeaux Métropole jetzt neu und zeigt die nächste Sperrung.",
+        "es": "Vuelve a leer ahora el calendario de Bordeaux Métropole y muestra el próximo cierre."
+      },
+      "timeout_seconds": 60
+    }
+  ],
+  "widgets": [
     {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "fields": [
+      "key": "upcoming_closures",
+      "label": {
+        "en": "Bridge closures",
+        "fr": "Fermetures du pont",
+        "de": "Brückensperrungen",
+        "es": "Cierres del puente"
+      },
+      "description": {
+        "en": "Open or closed now, countdown to the next closure and the closures to come.",
+        "fr": "Ouvert ou fermé, compte à rebours de la prochaine fermeture et les fermetures à venir.",
+        "de": "Offen oder gesperrt, Countdown bis zur nächsten Sperrung und die kommenden Sperrungen.",
+        "es": "Abierto o cerrado, cuenta atrás del próximo cierre y los cierres por venir."
+      },
+      "icon": "calendar",
+      "settings": [
         {
-          "key": "device",
+          "key": "rows",
           "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
+          "required": false,
+          "default": "5",
+          "label": {
+            "en": "Closures listed",
+            "fr": "Fermetures listées",
+            "de": "Aufgeführte Sperrungen",
+            "es": "Cierres listados"
+          },
+          "options": [
+            {
+              "value": "3",
+              "label": {
+                "en": "3",
+                "fr": "3",
+                "de": "3",
+                "es": "3"
+              }
+            },
+            {
+              "value": "5",
+              "label": {
+                "en": "5",
+                "fr": "5",
+                "de": "5",
+                "es": "5"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "en": "8",
+                "fr": "8",
+                "de": "8",
+                "es": "8"
+              }
+            }
+          ]
+        },
+        {
+          "key": "show_status",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "label": {
+            "en": "Show open or closed and the countdown",
+            "fr": "Afficher l'état et le compte à rebours",
+            "de": "Status und Countdown anzeigen",
+            "es": "Mostrar el estado y la cuenta atrás"
+          }
         }
       ]
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "closure_tomorrow",
+      "label": {
+        "en": "Closure tomorrow",
+        "fr": "Fermeture demain",
+        "de": "Sperrung morgen",
+        "es": "Cierre mañana"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "Fires the day before a closure, at the hour chosen, with every closure of the next day.",
+        "fr": "Se déclenche la veille d'une fermeture, à l'heure choisie, avec toutes les fermetures du lendemain.",
+        "de": "Löst am Vortag einer Sperrung zur gewählten Uhrzeit aus, mit allen Sperrungen des nächsten Tages.",
+        "es": "Se activa la víspera de un cierre, a la hora elegida, con todos los cierres del día siguiente."
       },
       "fields": [
         {
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
+          "required": false,
+          "label": {
+            "en": "Bridge",
+            "fr": "Pont",
+            "de": "Brücke",
+            "es": "Puente"
+          },
+          "description": {
+            "en": "Empty: any bridge of the integration.",
+            "fr": "Vide : n'importe quel pont de l'intégration.",
+            "de": "Leer: jede Brücke der Integration.",
+            "es": "Vacío: cualquier puente de la integración."
+          }
         },
         {
-          "key": "target",
-          "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
+          "key": "hour",
+          "type": "select",
+          "required": true,
+          "default": "20",
+          "label": {
+            "en": "At",
+            "fr": "À",
+            "de": "Um",
+            "es": "A las"
+          },
           "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
+            {
+              "value": "8",
+              "label": {
+                "en": "8:00",
+                "fr": "8 h",
+                "de": "8:00 Uhr",
+                "es": "8:00"
+              }
+            },
+            {
+              "value": "12",
+              "label": {
+                "en": "12:00",
+                "fr": "12 h",
+                "de": "12:00 Uhr",
+                "es": "12:00"
+              }
+            },
+            {
+              "value": "17",
+              "label": {
+                "en": "17:00",
+                "fr": "17 h",
+                "de": "17:00 Uhr",
+                "es": "17:00"
+              }
+            },
+            {
+              "value": "18",
+              "label": {
+                "en": "18:00",
+                "fr": "18 h",
+                "de": "18:00 Uhr",
+                "es": "18:00"
+              }
+            },
+            {
+              "value": "19",
+              "label": {
+                "en": "19:00",
+                "fr": "19 h",
+                "de": "19:00 Uhr",
+                "es": "19:00"
+              }
+            },
+            {
+              "value": "20",
+              "label": {
+                "en": "20:00",
+                "fr": "20 h",
+                "de": "20:00 Uhr",
+                "es": "20:00"
+              }
+            },
+            {
+              "value": "21",
+              "label": {
+                "en": "21:00",
+                "fr": "21 h",
+                "de": "21:00 Uhr",
+                "es": "21:00"
+              }
+            },
+            {
+              "value": "22",
+              "label": {
+                "en": "22:00",
+                "fr": "22 h",
+                "de": "22:00 Uhr",
+                "es": "22:00"
+              }
+            }
           ]
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "sentence",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
+          "label": {
+            "en": "Sentence ready to send",
+            "fr": "Phrase prête à envoyer",
+            "de": "Fertiger Satz zum Senden",
+            "es": "Frase lista para enviar"
+          }
+        },
+        {
+          "key": "hour",
+          "type": "number",
+          "label": {
+            "en": "Hour",
+            "fr": "Heure",
+            "de": "Uhrzeit",
+            "es": "Hora"
+          }
+        },
+        {
+          "key": "count",
+          "type": "number",
+          "label": {
+            "en": "Closures tomorrow",
+            "fr": "Fermetures demain",
+            "de": "Sperrungen morgen",
+            "es": "Cierres mañana"
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Day",
+            "fr": "Jour",
+            "de": "Tag",
+            "es": "Día"
+          }
+        },
+        {
+          "key": "first_start",
+          "type": "string",
+          "label": {
+            "en": "First closing time",
+            "fr": "Heure de la première fermeture",
+            "de": "Uhrzeit der ersten Sperrung",
+            "es": "Hora del primer cierre"
+          }
+        },
+        {
+          "key": "first_end",
+          "type": "string",
+          "label": {
+            "en": "First reopening time",
+            "fr": "Heure de la première réouverture",
+            "de": "Uhrzeit der ersten Wiederöffnung",
+            "es": "Hora de la primera reapertura"
+          }
+        },
+        {
+          "key": "first_label",
+          "type": "string",
+          "label": {
+            "en": "First boat or event",
+            "fr": "Premier navire ou événement",
+            "de": "Erstes Schiff oder Ereignis",
+            "es": "Primer barco o evento"
+          }
+        },
+        {
+          "key": "total",
+          "type": "boolean",
+          "label": {
+            "en": "A total closure",
+            "fr": "Une fermeture totale",
+            "de": "Eine vollständige Sperrung",
+            "es": "Un cierre total"
+          }
+        }
+      ]
+    },
+    {
+      "key": "closure_started",
+      "label": {
+        "en": "Closure starts",
+        "fr": "Début de fermeture",
+        "de": "Sperrung beginnt",
+        "es": "Empieza el cierre"
+      },
+      "description": {
+        "en": "Fires at the scheduled closing time of the bridge to traffic.",
+        "fr": "Se déclenche à l'heure prévue de fermeture du pont à la circulation.",
+        "de": "Löst zur geplanten Uhrzeit der Sperrung der Brücke für den Verkehr aus.",
+        "es": "Se activa a la hora prevista de cierre del puente al tráfico."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Bridge",
+            "fr": "Pont",
+            "de": "Brücke",
+            "es": "Puente"
+          },
+          "description": {
+            "en": "Empty: any bridge of the integration.",
+            "fr": "Vide : n'importe quel pont de l'intégration.",
+            "de": "Leer: jede Brücke der Integration.",
+            "es": "Vacío: cualquier puente de la integración."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "sentence",
+          "type": "string",
+          "label": {
+            "en": "Sentence ready to send",
+            "fr": "Phrase prête à envoyer",
+            "de": "Fertiger Satz zum Senden",
+            "es": "Frase lista para enviar"
+          }
+        },
+        {
+          "key": "label",
+          "type": "string",
+          "label": {
+            "en": "Boat or event (as published)",
+            "fr": "Navire ou événement (tel que publié)",
+            "de": "Schiff oder Ereignis (wie veröffentlicht)",
+            "es": "Barco o evento (tal como se publica)"
+          }
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "label": {
+            "en": "Reason (boat, maintenance, event)",
+            "fr": "Motif (boat, maintenance, event)",
+            "de": "Grund (boat, maintenance, event)",
+            "es": "Motivo (boat, maintenance, event)"
+          }
+        },
+        {
+          "key": "reason_text",
+          "type": "string",
+          "label": {
+            "en": "Reason in words",
+            "fr": "Motif en clair",
+            "de": "Grund in Worten",
+            "es": "Motivo en palabras"
+          }
+        },
+        {
+          "key": "total",
+          "type": "boolean",
+          "label": {
+            "en": "Total closure",
+            "fr": "Fermeture totale",
+            "de": "Vollständige Sperrung",
+            "es": "Cierre total"
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Closing time",
+            "fr": "Heure de fermeture",
+            "de": "Uhrzeit der Sperrung",
+            "es": "Hora de cierre"
+          }
+        },
+        {
+          "key": "end",
+          "type": "string",
+          "label": {
+            "en": "Reopening time",
+            "fr": "Heure de réouverture",
+            "de": "Uhrzeit der Wiederöffnung",
+            "es": "Hora de reapertura"
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration in minutes",
+            "fr": "Durée en minutes",
+            "de": "Dauer in Minuten",
+            "es": "Duración en minutos"
+          }
+        }
+      ]
+    },
+    {
+      "key": "closure_ended",
+      "label": {
+        "en": "Closure ends",
+        "fr": "Fin de fermeture",
+        "de": "Sperrung endet",
+        "es": "Termina el cierre"
+      },
+      "description": {
+        "en": "Fires at the scheduled reopening time of the bridge to traffic.",
+        "fr": "Se déclenche à l'heure prévue de réouverture du pont à la circulation.",
+        "de": "Löst zur geplanten Uhrzeit der Wiederöffnung der Brücke für den Verkehr aus.",
+        "es": "Se activa a la hora prevista de reapertura del puente al tráfico."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Bridge",
+            "fr": "Pont",
+            "de": "Brücke",
+            "es": "Puente"
+          },
+          "description": {
+            "en": "Empty: any bridge of the integration.",
+            "fr": "Vide : n'importe quel pont de l'intégration.",
+            "de": "Leer: jede Brücke der Integration.",
+            "es": "Vacío: cualquier puente de la integración."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "sentence",
+          "type": "string",
+          "label": {
+            "en": "Sentence ready to send",
+            "fr": "Phrase prête à envoyer",
+            "de": "Fertiger Satz zum Senden",
+            "es": "Frase lista para enviar"
+          }
+        },
+        {
+          "key": "label",
+          "type": "string",
+          "label": {
+            "en": "Boat or event (as published)",
+            "fr": "Navire ou événement (tel que publié)",
+            "de": "Schiff oder Ereignis (wie veröffentlicht)",
+            "es": "Barco o evento (tal como se publica)"
+          }
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "label": {
+            "en": "Reason (boat, maintenance, event)",
+            "fr": "Motif (boat, maintenance, event)",
+            "de": "Grund (boat, maintenance, event)",
+            "es": "Motivo (boat, maintenance, event)"
+          }
+        },
+        {
+          "key": "reason_text",
+          "type": "string",
+          "label": {
+            "en": "Reason in words",
+            "fr": "Motif en clair",
+            "de": "Grund in Worten",
+            "es": "Motivo en palabras"
+          }
+        },
+        {
+          "key": "total",
+          "type": "boolean",
+          "label": {
+            "en": "Total closure",
+            "fr": "Fermeture totale",
+            "de": "Vollständige Sperrung",
+            "es": "Cierre total"
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Closing time",
+            "fr": "Heure de fermeture",
+            "de": "Uhrzeit der Sperrung",
+            "es": "Hora de cierre"
+          }
+        },
+        {
+          "key": "end",
+          "type": "string",
+          "label": {
+            "en": "Reopening time",
+            "fr": "Heure de réouverture",
+            "de": "Uhrzeit der Wiederöffnung",
+            "es": "Hora de reapertura"
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration in minutes",
+            "fr": "Durée en minutes",
+            "de": "Dauer in Minuten",
+            "es": "Duración en minutos"
+          }
         }
       ]
     }
   ],
   "scene_actions": [
     {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
+      "key": "read_next_closure",
+      "label": {
+        "en": "Read the next closure",
+        "fr": "Lire la prochaine levée",
+        "de": "Nächste Sperrung lesen",
+        "es": "Leer el próximo cierre"
       },
-      "timeout_seconds": 15,
-      "fields": [
-        {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
-        }
-      ],
+      "description": {
+        "en": "A sentence ready to send: next closure (or the current one), times, reason and type.",
+        "fr": "Une phrase prête à envoyer : prochaine fermeture (ou celle en cours), horaires, motif et type.",
+        "de": "Ein fertiger Satz zum Senden: nächste (oder laufende) Sperrung, Uhrzeiten, Grund und Art.",
+        "es": "Una frase lista para enviar: próximo cierre (o el actual), horarios, motivo y tipo."
+      },
+      "timeout_seconds": 10,
       "outputs": [
         {
-          "key": "signalled",
+          "key": "sentence",
+          "type": "string",
+          "label": {
+            "en": "Sentence ready to send",
+            "fr": "Phrase prête à envoyer",
+            "de": "Fertiger Satz zum Senden",
+            "es": "Frase lista para enviar"
+          }
+        },
+        {
+          "key": "closed_now",
           "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "label": {
+            "en": "Closed now",
+            "fr": "Fermé maintenant",
+            "de": "Jetzt gesperrt",
+            "es": "Cerrado ahora"
+          }
+        },
+        {
+          "key": "minutes_until",
+          "type": "number",
+          "label": {
+            "en": "Minutes until the closure (0: now, -1: none)",
+            "fr": "Minutes avant la fermeture (0 : en cours, -1 : aucune)",
+            "de": "Minuten bis zur Sperrung (0: jetzt, -1: keine)",
+            "es": "Minutos hasta el cierre (0: ahora, -1: ninguno)"
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Closing",
+            "fr": "Fermeture",
+            "de": "Sperrung",
+            "es": "Cierre"
+          }
+        },
+        {
+          "key": "end",
+          "type": "string",
+          "label": {
+            "en": "Reopening",
+            "fr": "Réouverture",
+            "de": "Wiederöffnung",
+            "es": "Reapertura"
+          }
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "label": {
+            "en": "Boat or event",
+            "fr": "Navire ou événement",
+            "de": "Schiff oder Ereignis",
+            "es": "Barco o evento"
+          }
+        },
+        {
+          "key": "total",
+          "type": "boolean",
+          "label": {
+            "en": "Total closure",
+            "fr": "Fermeture totale",
+            "de": "Vollständige Sperrung",
+            "es": "Cierre total"
+          }
         }
       ]
-    }
-  ],
-  "widgets": [
-    {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
-      },
-      "icon": "activity",
-      "action_timeout_seconds": 15
     }
   ]
 }

@@ -1,0 +1,14 @@
+{
+  "dataset_id": "previsions_pont_chaban",
+  "metas": {
+    "default": {
+      "title": "Pont Chaban - Prévisions - Fermeture",
+      "modified": "2026-10-23T13:29:55+00:00",
+      "data_processed": "2026-10-23T13:29:55+00:00",
+      "metadata_processed": "2026-10-23T13:29:55.305000+00:00",
+      "publisher": "Bordeaux Métropole",
+      "license": "Licence Ouverte",
+      "records_count": 98
+    }
+  }
+}

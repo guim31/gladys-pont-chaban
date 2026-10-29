@@ -1,41 +1,64 @@
 // -----------------------------------------------------------------------------
-// Scene actions (SDK v0.14+, Gladys 5.1+).
-//
-// A scene action is an OPERATION a scene author places in a scene, with
-// parameters and a result: "identify this device", "take a snapshot", "clean
-// these rooms". Each one is declared in the manifest `scene_actions` field
-// (key, label, `fields` in the config_schema grammar, scalar `outputs`) and
-// handled here, keyed by that same `key`; index.js registers every entry with
-// `gladys.onSceneAction(key, ...)`.
-//
-// Scene TRIGGERS are the other direction ("this happened"): they are fired by
-// the device that observes the event, see src/devices/motionSensor.js.
-//
-// The rules that matter:
-//   - `fields` arrive RESOLVED: scene variables substituted, defaults applied,
-//     validated by the core; a `"source": "devices"` field is the chosen
-//     device external_id;
-//   - resolve an object of the declared `outputs` (scalars only), readable by
-//     the following actions of the scene, or `undefined` for none. Keys not
-//     declared in the manifest are dropped by the core;
-//   - throwing fails THIS action only: the scene logs it and continues. A
-//     scene action is never a condition: return an output and let the scene
-//     author gate on it;
-//   - never fire a scene event as a consequence of a received action: a scene
-//     bound to that event would loop through the integration.
+// Scene action (manifest `scene_actions`): the next closure in one sentence,
+// ready to send in a message or to say aloud ({{<column>.<row>.sentence}}), in
+// the language of the configuration (a scene action does not get the user's
+// language), and a few values for conditions.
 // -----------------------------------------------------------------------------
 
-import { createLogger } from '@gladysassistant/integration-sdk';
-import { signalDevice } from './devices/index.js';
+import { current, nextClosure } from './closures.js';
+import { why } from './device.js';
+import { BRIDGE_IN_SENTENCE, SENTENCES } from './i18n.js';
+import { MINUTE, formatDateTime, formatDay, formatTime, localDate } from './time.js';
 
-const logger = createLogger({ name: 'scenes' });
+/**
+ * The words of a closure for the sentences. The reopening day is named only
+ * when it is not the day of `reference` (the start, or now when running).
+ */
+export function closureWords(closure, language, timeZone, reference = closure.start) {
+  const endsOtherDay = localDate(closure.end, timeZone) !== localDate(reference, timeZone);
+  return {
+    bridge: BRIDGE_IN_SENTENCE[language],
+    day: formatDay(closure.start, language, timeZone, 'long'),
+    start: formatTime(closure.start, language, timeZone),
+    end: formatTime(closure.end, language, timeZone),
+    endDay: endsOtherDay ? formatDay(closure.end, language, timeZone, 'long') : '',
+    why: why(closure, language),
+    total: closure.total,
+  };
+}
+
+/** The next closure (or the running one) in a sentence. */
+export function nextSentence(service, language = service.config.language) {
+  const sentences = SENTENCES[language];
+  const closures = service.closures();
+  if (!closures) {
+    return sentences.noData;
+  }
+  const now = service.now();
+  const running = current(closures, now);
+  if (running) {
+    return sentences.closedNow(closureWords(running, language, service.timeZone, now));
+  }
+  const next = nextClosure(closures, now);
+  return next
+    ? sentences.next(closureWords(next, language, service.timeZone))
+    : sentences.none(BRIDGE_IN_SENTENCE[language]);
+}
 
 export const SCENE_ACTIONS = {
-  // The ack is awaited under the action's `timeout_seconds` (15 s in the
-  // manifest), counted from the moment the scene reaches the action.
-  async identify_device(gladys, { fields, config }) {
-    logger.info(`Scene action identify_device <- ${fields.device}`);
-    const signalled = await signalDevice(gladys, fields.device, config);
-    return { signalled };
+  read_next_closure: async (service) => {
+    const language = service.config.language;
+    const closures = service.closures() ?? [];
+    const now = service.now();
+    const next = nextClosure(closures, now);
+    return {
+      sentence: nextSentence(service),
+      closed_now: Boolean(current(closures, now)),
+      minutes_until: next ? Math.max(0, Math.ceil((next.start - now) / MINUTE)) : -1,
+      start: next ? formatDateTime(next.start, language, service.timeZone) : '',
+      end: next ? formatDateTime(next.end, language, service.timeZone) : '',
+      reason: next ? next.label : '',
+      total: next ? next.total : false,
+    };
   },
 };
