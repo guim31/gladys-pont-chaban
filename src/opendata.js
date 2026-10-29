@@ -134,8 +134,9 @@ export function parseClosures(records) {
     const closing = String(record?.fermeture_a_la_circulation ?? '').trim();
     const reopening = String(record?.re_ouverture_a_la_circulation ?? '').trim();
     const start = zonedInstant(date, closing);
-    // Reopened at or before the closing time on the wall clock: after midnight.
-    const overnight = wallMinutes(reopening) <= wallMinutes(closing);
+    // Reopened before the closing time on the wall clock: after midnight.
+    // Equal times make an empty closure, left out below.
+    const overnight = wallMinutes(reopening) < wallMinutes(closing);
     const end = zonedInstant(overnight ? nextDate(date) : date, reopening);
     if (start === null || end === null || end <= start) {
       continue;
@@ -150,15 +151,16 @@ export function parseClosures(records) {
     const same = closures.get(id);
     if (same) {
       // Two records for one closure: one closure, both names, the longest.
-      if (!same.label.split(' - ').includes(label)) {
-        same.label = `${same.label} - ${label}`.slice(0, 120);
+      if (!same.labels.includes(label)) {
+        same.labels.push(label);
+        same.label = same.labels.join(' - ').slice(0, 120);
         same.reason = reasonOf(same.label);
       }
       same.end = Math.max(same.end, end);
       same.total ||= total;
       continue;
     }
-    closures.set(id, { id, start, end, label, reason: reasonOf(label), total });
+    closures.set(id, { id, start, end, label, labels: [label], reason: reasonOf(label), total });
   }
   return [...closures.values()].sort((a, b) => a.start - b.start || a.end - b.end);
 }

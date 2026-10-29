@@ -191,6 +191,15 @@ test('two records for one closure make one, with both names', () => {
   ]);
   assert.equal(closures.length, 1);
   assert.equal(closures[0].label, 'BELEM - MARATHON');
+  const empty = parseClosures([
+    {
+      bateau: 'Z',
+      date_passage: '2026-07-10',
+      fermeture_a_la_circulation: '12:30',
+      re_ouverture_a_la_circulation: '12:30',
+    },
+  ]);
+  assert.deepEqual(empty, [], 'equal times: no 24-hour closure');
   assert.equal(closures[0].reason, 'event');
   assert.equal(iso(closures[0].end), '2026-07-09T05:30:00.000Z');
 });
